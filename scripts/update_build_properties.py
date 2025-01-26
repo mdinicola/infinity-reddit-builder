@@ -58,7 +58,6 @@ def update_build_gradle_file(in_file: str, out_file: str, data: dict):
 
 def main(args: argparse.Namespace):
     build_gradle_file = f'{args.src_path}/Infinity-For-Reddit/app/build.gradle'
-    build_gradle_file2 = f'{args.src_path}/Infinity-For-Reddit/app/build2.gradle'
 
     build_gradle_data = {
         'keystore': {
@@ -69,7 +68,6 @@ def main(args: argparse.Namespace):
     }
 
     api_utils_file = f'{args.src_path}/Infinity-For-Reddit/app/src/main/java/ml/docilealligator/infinityforreddit/utils/APIUtils.java'
-    api_utils_file2 = f'{args.src_path}/Infinity-For-Reddit/app/src/main/java/ml/docilealligator/infinityforreddit/utils/APIUtils2.java'
 
     api_utils_data = {
         'username': args.username,
@@ -82,8 +80,8 @@ def main(args: argparse.Namespace):
     reddit_username="mike"
     reddit_api_key="boop"
 
-    update_api_utils(api_utils_file, api_utils_file2, api_utils_data)
-    update_build_gradle_file(build_gradle_file, build_gradle_file2, build_gradle_data)
+    update_api_utils(api_utils_file, api_utils_file, api_utils_data)
+    update_build_gradle_file(build_gradle_file, build_gradle_file, build_gradle_data)
 
 
 parser = argparse.ArgumentParser(
