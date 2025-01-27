@@ -8,6 +8,7 @@ env:
     APP_VERSION: "apps/InfinityForRedditBuilder:AppVersion"
     REDDIT_USERNAME: "apps/InfinityForRedditBuilder:RedditUsername"
     REDDIT_CLIENT_ID: "apps/InfinityForRedditBuilder:RedditApiKey"
+    KEYSTORE_PATH: "apps/InfinityForRedditBuilder:KeystorePath"
     KEYSTORE_PASSWORD: "apps/InfinityForRedditBuilder:KeystorePassword"
   
 
@@ -27,16 +28,16 @@ phases:
   pre_build:
     on-failure: ABORT
     commands:
+      # Download and extract Infinity-For-Reddit source zip
       - wget --quiet --output-document=Infinity-For-Reddit.zip "https://github.com/Docile-Alligator/Infinity-For-Reddit/archive/refs/tags/$APP_VERSION.zip"
       - unzip -q "Infinity-For-Reddit.zip"
       - mv -T Infinity-For-Reddit-* Infinity-For-Reddit
-      - aws s3 cp s3://mdinicola-files/infinity-for-reddit/infinity-for-reddit.jks infinity-for-reddit.jks
+
+      # Download keystore file
+      - aws s3 cp $KEYSTORE_PATH infinity-for-reddit.jks
+
+      # Run script to prepare for build
       - python3 scripts/update_build_properties.py --src-path $CODEBUILD_SRC_DIR --min-sdk $MIN_SDK_VERSION --client-id $REDDIT_CLIENT_ID --username $REDDIT_USERNAME --keystore-password KEYSTORE_PASSWORD
-      # - sed -i "s/minSdk 21/minSdk $MIN_SDK_VERSION/g" Infinity-For-Reddit/app/build.gradle
-      # - sed -i "s/NOe2iKrPPzwscA/$REDDIT_API_KEY/g" Infinity-For-Reddit/app/src/main/java/ml/docilealligator/infinityforreddit/utils/APIUtils.java
-      # - sed -i "s/infinity:\/\/localhost/http:\/\/127.0.0.1/g" Infinity-For-Reddit/app/src/main/java/ml/docilealligator/infinityforreddit/utils/APIUtils.java
-      # - sed -i "s/android:ml.docilealligator.infinityforreddit:\" + BuildConfig.VERSION_NAME + \" (by \/u\/Hostilenemy)/android:personal-app:0.0.1 (by \/u\/$REDDIT_USERNAME)/g" Infinity-For-Reddit/app/src/main/java/ml/docilealligator/infinityforreddit/utils/APIUtils.java
-      # Download keystore from S3
 
   build:
     on-failure: ABORT
