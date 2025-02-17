@@ -16,7 +16,7 @@ phases:
   install:
     on-failure: ABORT
     runtime-versions:
-     java: corretto21
+      java: corretto21
       python: 3.12
     commands:
       - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
