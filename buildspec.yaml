@@ -16,14 +16,14 @@ phases:
   install:
     on-failure: ABORT
     runtime-versions:
-    #  java: corretto21
+     java: corretto21
       python: 3.12
-    # commands:
-      # - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-      # - unzip -q android-sdk.zip -d android-sdk
-      # - export ANDROID_SDK_ROOT=$CODEBUILD_SRC_DIR/android-sdk
-      # - yes | $CODEBUILD_SRC_DIR/android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_SDK_ROOT "platforms;android-34" "build-tools;34.0.0"
-      # - export PATH=$PATH:$CODEBUILD_SRC_DIR/android-sdk/tools/bin:$CODEBUILD_SRC_DIR/android-sdk/platform-tools:$CODEBUILD_SRC_DIR/android-sdk/build-tools/34.0.0
+    commands:
+      - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+      - unzip -q android-sdk.zip -d android-sdk
+      - export ANDROID_SDK_ROOT=$CODEBUILD_SRC_DIR/android-sdk
+      - yes | $CODEBUILD_SRC_DIR/android-sdk/cmdline-tools/bin/sdkmanager --sdk_root=$ANDROID_SDK_ROOT "platforms;android-34" "build-tools;34.0.0"
+      - export PATH=$PATH:$CODEBUILD_SRC_DIR/android-sdk/tools/bin:$CODEBUILD_SRC_DIR/android-sdk/platform-tools:$CODEBUILD_SRC_DIR/android-sdk/build-tools/34.0.0
 
   pre_build:
     on-failure: ABORT
@@ -42,19 +42,19 @@ phases:
   build:
     on-failure: ABORT
     commands:
-      - echo $ANDROID_SDK_ROOT
-      - echo $JAVA_HOME
-      - echo $PATH
+      - ./gradlew updateLintBaseline
+      - ./gradlew assembleRelease
+      - mv Infinity-For-Reddit/app/build/outputs/apk/release/app-release.apk Infinity-For-Reddit/app/build/outputs/apk/release/Infinity-For-Reddit.apk
 
   # post_build:
   #   on-failure: ABORT
   #   commands:
-      # sign apk
-      # remove keystore
-      # remove APIUtils file
+  #     # sign apk
+  #     - rm infinity-for-reddit.jks
+  #     - Infinity-For-Reddit/app/src/main/java/ml/docilealligator/infinityforreddit/utils/APIUtils.java
 
 artifacts:
     files:
       - Infinity-For-Reddit/app/build.gradle
       - Infinity-For-Reddit/app/src/main/java/ml/docilealligator/infinityforreddit/utils/APIUtils.java
-      - infinity-for-reddit.jks
+      - Infinity-For-Reddit/app/build/outputs/apk/release/Infinity-For-Reddit.apk
