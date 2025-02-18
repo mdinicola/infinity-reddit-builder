@@ -31,3 +31,16 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform/
+terraform.tfvars
+backend.tf
+
+# AWS
+.aws-sam/
+
+# Artifacts
+artifacts/
