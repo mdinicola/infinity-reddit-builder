@@ -42,9 +42,10 @@ phases:
   build:
     on-failure: ABORT
     commands:
-      - cd Infinity-For-Reddit 
+      - cd Infinity-For-Reddit
       - ./gradlew updateLintBaseline
       - ./gradlew assembleRelease
+      - cd ..
       - mv Infinity-For-Reddit/app/build/outputs/apk/release/app-release.apk Infinity-For-Reddit/app/build/outputs/apk/release/Infinity-For-Reddit.apk
 
   # post_build:
