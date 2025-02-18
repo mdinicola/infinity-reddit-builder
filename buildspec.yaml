@@ -37,7 +37,7 @@ phases:
       - aws s3 cp $KEYSTORE_PATH infinity-for-reddit.jks
 
       # Run script to prepare for build
-      - python3 scripts/update_build_properties.py --src-path $CODEBUILD_SRC_DIR --min-sdk $MIN_SDK_VERSION --client-id $REDDIT_CLIENT_ID --username $REDDIT_USERNAME --keystore-password KEYSTORE_PASSWORD
+      - python3 scripts/update_build_properties.py --src-path $CODEBUILD_SRC_DIR --min-sdk $MIN_SDK_VERSION --client-id $REDDIT_CLIENT_ID --username $REDDIT_USERNAME --keystore-password $KEYSTORE_PASSWORD
 
   build:
     on-failure: ABORT
